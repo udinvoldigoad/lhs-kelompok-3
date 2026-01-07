@@ -4,7 +4,7 @@ import Hero from "./components/Hero";
 import About from "./components/About";
 import MemberSection from "./components/MemberSection";
 import MemberModal from "./components/MemberModal";
-import Gallery from "./components/Gallery";
+import GallerySection from "./components/GallerySection";
 import Comments from "./components/Comments";
 
 function App() {
@@ -25,7 +25,7 @@ function App() {
         />
       )}
 
-      <Gallery />
+      <GallerySection />
       <Comments />
     </>
   );

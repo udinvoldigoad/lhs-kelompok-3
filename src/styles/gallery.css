@@ -1,82 +1,143 @@
-.gallery {
+/* =====================
+   GALLERY SECTION
+===================== */
+
+.gallery-section {
+  padding: 120px 0;
   background: #020617;
-  padding: 100px 10%;
+  color: white;
 }
 
+/* =====================
+   ROW
+===================== */
+
+.gallery-row {
+  margin-bottom: 140px;
+  text-align: center;
+  overflow: visible;
+}
+
+/* TITLE */
 .gallery-title {
-  font-size: 2.5rem;
-  margin-bottom: 40px;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 2.4rem;
+  font-weight: 700;
+  margin-bottom: 14px;
 }
 
-/* GRID FOTO */
-.gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 20px;
+/* DESC */
+.gallery-desc {
+  font-size: 1rem;
+  opacity: 0.8;
+  margin-bottom: 36px;
 }
 
-.gallery-item {
+/* =====================
+   PER-WORD HOVER EFFECT
+===================== */
+
+.hover-word {
+  position: relative;
+  display: inline-block;
+
+  color: rgba(255,255,255,0.9);
+  transition:
+    color 0.25s ease,
+    transform 0.25s ease,
+    text-shadow 0.25s ease;
+}
+
+/* efek saat hover kata */
+.hover-word:hover {
+  color: #38bdf8;
+  transform: translateY(-1px);
+  text-shadow: 0 0 10px rgba(56,189,248,0.45);
+}
+
+.gallery-title:hover .hover-word,
+.gallery-desc:hover .hover-word {
+  color: rgba(255,255,255,0.4);
+}
+
+.gallery-title .hover-word:hover,
+.gallery-desc .hover-word:hover {
+  color: #38bdf8;
+}
+
+.gallery-title,
+.gallery-desc {
+  cursor: default;
+}
+
+
+/* =====================
+   IMAGE TRACK
+===================== */
+
+.gallery-track {
+  display: flex;
+  gap: 18px;
+  will-change: transform;
+}
+
+.gallery-track-wrapper {
+  overflow: hidden;
   width: 100%;
-  height: 200px;
-  object-fit: cover;
+  padding-inline: 10%; /* ⬅️ PINDAH KE SINI */
+}
+
+.gallery-track::-webkit-scrollbar {
+  display: none;
+}
+
+.gallery-image {
+  flex: 0 0 auto;
+  width: 380px;
+  height: 260px;
   border-radius: 16px;
-  cursor: pointer;
+  overflow: hidden;
+  background: #020617;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.gallery-item:hover {
-  transform: scale(1.05);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+.gallery-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
-/* MODAL */
-.gallery-modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.8);
+/* HOVER FOTO */
+.gallery-image:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.45);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .gallery-title {
+    font-size: 1.8rem;
+  }
+
+  .gallery-image {
+    width: 280px;
+    height: 200px;
+  }
+}
+
+/* =====================
+   ARAH SELANG-SELING ASLI
+===================== */
+
+/* baris kiri → normal */
+.gallery-track-wrapper.left {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  animation: fadeIn 0.25s ease forwards;
+  justify-content: flex-start;
 }
 
-.gallery-modal {
-  max-width: 90%;
-  max-height: 90%;
-  text-align: center;
-  animation: scaleIn 0.25s ease forwards;
-}
-
-.gallery-modal img {
-  max-width: 100%;
-  max-height: 70vh;
-  border-radius: 16px;
-  margin-bottom: 20px;
-}
-
-.gallery-modal p {
-  opacity: 0.85;
-  font-style: italic;
-}
-
-/* ANIMASI */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes scaleIn {
-  from {
-    transform: scale(0.95);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
+/* baris kanan → mulai dari kanan */
+.gallery-track-wrapper.right {
+  display: flex;
+  justify-content: flex-end;
 }
