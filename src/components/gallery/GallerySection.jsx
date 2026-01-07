@@ -1,5 +1,5 @@
-import "../styles/gallery.css";
-import { galleryData } from "../data/galleryData";
+import "./gallery.css";
+import { galleryData } from "../../data/galleryData";
 import GalleryRow from "./GalleryRow";
 
 export default function GallerySection() {

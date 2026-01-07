@@ -1,4 +1,4 @@
-import "../styles/member.css";
+import "./member.css";
 
 export default function MemberCard({ member }) {
   return (

@@ -1,4 +1,4 @@
-import "../styles/member.css";
+import "./member.css";
 import { FaInstagram } from "react-icons/fa";
 
 export default function MemberModal({ member, onClose }) {

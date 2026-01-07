@@ -1,10 +1,10 @@
-import "../styles/hero.css";
-import img1 from "../assets/gallery/1.jpg";
-import img2 from "../assets/gallery/2.jpg";
-import img3 from "../assets/gallery/3.jpg";
-import img4 from "../assets/gallery/4.jpg";
-import img5 from "../assets/gallery/5.jpg";
-import img6 from "../assets/gallery/6.jpg";
+import "./hero.css";
+import img1 from "../../assets/gallery/1.jpg";
+import img2 from "../../assets/gallery/2.jpg";
+import img3 from "../../assets/gallery/3.jpg";
+import img4 from "../../assets/gallery/4.jpg";
+import img5 from "../../assets/gallery/5.jpg";
+import img6 from "../../assets/gallery/6.jpg";
 
 const posters = [
   img1, img2, img3, img6, img5, img4,

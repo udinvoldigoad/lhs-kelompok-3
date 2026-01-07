@@ -1,11 +1,11 @@
-import Navbar from "./components/Navbar";
+import Navbar from "./components/navbar/Navbar";
 import { useState } from "react";
-import Hero from "./components/Hero";
-import About from "./components/About";
-import MemberSection from "./components/MemberSection";
-import MemberModal from "./components/MemberModal";
-import GallerySection from "./components/GallerySection";
-import Comments from "./components/Comments";
+import Hero from "./components/hero/Hero";
+import About from "./components/about/About";
+import MemberSection from "./components/member/MemberSection";
+import MemberModal from "./components/member/MemberModal";
+import GallerySection from "./components/gallery/GallerySection";
+import Comments from "./components/comments/Comments";
 
 function App() {
   const [activeMember, setActiveMember] = useState(null);

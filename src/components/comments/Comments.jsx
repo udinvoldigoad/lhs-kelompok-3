@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "../styles/comments.css";
+import "./comments.css";
 
 export default function Comments() {
   const [name, setName] = useState("");

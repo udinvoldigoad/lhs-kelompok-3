@@ -1,5 +1,5 @@
-import "../styles/about.css";
-import aboutImg from "../assets/gallery/1.jpg"; // ganti sesuai foto utama
+import "./about.css";
+import aboutImg from "../../assets/gallery/1.jpg"; // ganti sesuai foto utama
 
 export default function About() {
   return (

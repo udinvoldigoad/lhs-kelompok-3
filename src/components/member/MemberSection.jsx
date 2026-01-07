@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-import "../styles/member.css";
-import { members } from "../data/members";
+import "./member.css";
+import { members } from "../../data/members";
 import MemberCard from "./MemberCard";
 // import MemberModal from "./MemberModal";
 
