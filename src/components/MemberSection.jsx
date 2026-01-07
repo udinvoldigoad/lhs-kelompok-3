@@ -36,18 +36,23 @@ export default function MemberSection({ onSelect }) {
   };
 
   const CARD_WIDTH = document.querySelector(".member-card")?.offsetWidth + 20 || 280;
+  const DOT_COUNT = 9;
 
+  const getMaxScroll = () => {
+    const el = scrollRef.current;
+    return el.scrollWidth - el.clientWidth;
+  };
 
   const updateActiveDot = () => {
     const el = scrollRef.current;
     if (!el) return;
 
-    const index = Math.floor(
-      (el.scrollLeft + CARD_WIDTH / 2) / CARD_WIDTH
-    );
+    const maxScroll = getMaxScroll();
+    const progress = el.scrollLeft / maxScroll;
+
+    const index = Math.round(progress * (DOT_COUNT - 1));
     setActiveIndex(index);
   };
-
 
   useEffect(() => {
     const el = scrollRef.current;
@@ -109,29 +114,23 @@ export default function MemberSection({ onSelect }) {
       </div>
 
       <div className="member-dots">
-        {members.map((_, i) => (
+        {Array.from({ length: DOT_COUNT }).map((_, i) => (
           <button
             key={i}
             className={`dot ${i === activeIndex ? "active" : ""}`}
             onClick={() => {
               const el = scrollRef.current;
-                if (!el) return;
+              const maxScroll = getMaxScroll();
 
-                // matikan snap sementara
-                setSnapEnabled(false);
-
-                el.scrollTo({
-                  left: i * CARD_WIDTH,
-                  behavior: "smooth",
+              el.scrollTo({
+                left: (i / (DOT_COUNT - 1)) * maxScroll,
+                behavior: "smooth",
               });
-              // hidupkan snap lagi setelah animasi
-              setTimeout(() => {
-                setSnapEnabled(true);
-              }, 450);
             }}
           />
         ))}
       </div>
+
 
     </section>
   );
