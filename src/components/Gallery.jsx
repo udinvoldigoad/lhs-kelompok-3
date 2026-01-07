@@ -6,7 +6,7 @@ export default function Gallery() {
   const [active, setActive] = useState(null);
 
   return (
-    <section className="gallery">
+    <section className="gallery" id="gallery">
       <h2 className="gallery-title">Galeri Kenangan</h2>
 
       <div className="gallery-grid">

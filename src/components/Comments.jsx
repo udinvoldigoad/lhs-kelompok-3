@@ -36,7 +36,7 @@ export default function Comments() {
   };
 
   return (
-    <section className="comments">
+    <section className="comments" id="comments">
       <h2 className="comments-title">Komentar & Pesan</h2>
 
       <form className="comments-form" onSubmit={submit}>

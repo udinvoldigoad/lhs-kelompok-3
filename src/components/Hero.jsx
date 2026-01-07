@@ -18,7 +18,7 @@ const posters = [
 
 export default function Hero() {
   return (
-    <section className="hero-netflix">
+    <section className="hero-netflix" id="hero">
       {/* POSTER WALL */}
     <div className="poster-track">
     <div className="poster-wall">
