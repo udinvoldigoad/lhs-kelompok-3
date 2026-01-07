@@ -1,0 +1,337 @@
+.hero {
+  position: relative;
+  min-height: 100vh;
+  background: #020617;
+  overflow: hidden;
+}
+
+/* GRID BACKGROUND */
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 8px;
+  opacity: 0.25;
+  z-index: 1;
+}
+
+.hero-grid-item {
+  background: #1e293b;
+  border-radius: 12px;
+  animation: floatDiagonal 10s linear infinite;
+}
+
+/* GERAK HALUS */
+@keyframes floatDiagonal {
+  0% {
+    transform: translate(0px, 0px);
+  }
+  50% {
+    transform: translate(-30px, 30px);
+  }
+  100% {
+    transform: translate(0px, 0px);
+  }
+}
+
+/* =========================
+   NETFLIX STYLE HERO
+========================= */
+
+.hero-netflix {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  background: #020617;
+}
+
+.hero-netflix::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+
+  background: linear-gradient(
+    to right,
+    rgba(2,6,23,0.45),
+    rgba(2,6,23,0) 25%,
+    rgba(2,6,23,0) 75%,
+    rgba(2,6,23,0.45)
+  );
+}
+
+
+.hero-netflix::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+
+  background: linear-gradient(
+    to top,
+    rgba(2, 6, 23, 0.85) 0%,
+    rgba(2, 6, 23, 0.5) 30%,
+    rgba(2, 6, 23, 0) 70%
+  );
+}
+
+
+/* POSTER WALL */
+.poster-wall {
+  flex: 0 0 auto;          /* jangan dipaksa fleksibel */
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+
+
+/* BARIS POSTER */
+.poster-row {
+  display: flex;
+  gap: 16px;
+}
+
+/* OFFSET BARIS GENAP (BATU BATA) */
+.poster-row.offset {
+  transform: translateX(158px);
+}
+
+/* GAMBAR */
+.poster-row img {
+  width: 300px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 6px;
+  display: block;
+  opacity: 0.9;
+}
+
+.poster-track {
+  position: absolute;
+  top: -40%;
+  left: -25%;
+
+  height: 220%;
+  display: flex;
+  column-gap: 16px; /* jarak antar wall */
+
+  --loop-distance: -1896px;
+
+  animation: moveTrack 100s linear infinite;
+  filter: blur(2px) saturate(0.95);
+  transform: rotate(-12deg);
+  will-change: transform;
+}
+
+.poster-row:nth-child(odd) {
+  margin-left: 0px;
+}
+
+.poster-row:nth-child(even) {
+  margin-left: 6px;
+}
+
+/* OVERLAY GRADIENT */
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(2, 6, 23, 0.55),
+    rgba(2, 6, 23, 0.9)
+  );
+  z-index: 2;
+}
+
+/* CONTENT */
+.hero-content-netflix {
+  position: relative;
+  z-index: 3;
+  height: 100%;
+  padding: 0 10%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 760px;
+
+  gap: 6px; /* ⬅️ diperkecil */
+}
+
+.hero-content-netflix button {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+
+  padding: 14px 32px;
+  border-radius: 999px;
+  border: none;
+
+  background: linear-gradient(
+    135deg,
+    #38bdf8,
+    #0ea5e9
+  );
+  color: #020617;
+
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  animation: fadeSlideUp 0.8s ease-out forwards;
+  animation-delay: 0.65s;
+}
+
+.hero-content-netflix button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(56, 189, 248, 0.35);
+}
+
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+
+  font-size: 1.4rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.75);
+  /* margin-bottom: 6px; */
+  margin: 0;
+  animation: fadeSlideUp 0.8s ease-out forwards;
+  animation-delay: 0.2s;
+}
+
+
+.hero-line {
+  flex-shrink: 0;
+  width: 160px;
+  height: 3px;
+
+  background: linear-gradient(
+    to right,
+    #38bdf8,
+    rgba(56, 189, 248, 0)
+  );
+}
+
+
+.hero-title-main {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 5rem;
+  font-weight: 700;
+  line-height: 1;
+  /* margin: 6px 0 8px; */
+  margin: 0;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  animation: fadeSlideUp 0.9s ease-out forwards;
+  animation-delay: 0.35s;
+   word-break: keep-all;
+}
+
+/* aksen elegan */
+.hero-title-main span {
+  background: linear-gradient(
+    90deg,
+    #e5e7eb,
+    #94a3b8
+  );
+
+  background-clip: text;        /* standard */
+  -webkit-background-clip: text; /* Safari / Chrome lama */
+
+  color: transparent;            /* standard */
+  -webkit-text-fill-color: transparent; /* Safari */
+}
+
+
+.hero-tagline {
+  font-size: 1.1rem;
+  line-height: 1.5;
+  font-weight: 400;
+  opacity: 0.85;
+  max-width: 420px;
+  /* margin-bottom: 16px; */
+  margin: 8px 0 12px;
+  animation: fadeSlideUp 0.8s ease-out forwards;
+  animation-delay: 0.5s;
+}
+
+@media (max-width: 768px) {
+  .hero-content-netflix {
+      max-width: 100%;
+    }
+
+  .hero-title-main {
+    font-size: 2.6rem;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.75rem;
+  }
+
+  .hero-line {
+    width: 100px;
+  }
+}
+
+
+/* ANIMASI POSTER */
+@keyframes moveTrack {
+  0% {
+    transform: translateX(0) rotate(-12deg);
+  }
+  100% {
+    transform: translateX(calc(var(--loop-distance) - 120px)) rotate(-12deg);
+  }
+}
+
+
+@media (max-width: 768px) {
+  .poster-row img {
+    width: 200px;
+    height: 150px;
+  }
+
+  .poster-row.offset {
+    transform: translateX(108px); /* (200 + 16) / 2 */
+  }
+
+  .hero-content-netflix h1 {
+    font-size: 2.2rem;
+  }
+}
+
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-eyebrow,
+.hero-title-main,
+.hero-tagline,
+.hero-content-netflix button {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-eyebrow,
+  .hero-title-main,
+  .hero-tagline,
+  .hero-content-netflix button {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
