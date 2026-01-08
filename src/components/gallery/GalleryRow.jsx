@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import "./gallery.css";
 
 export default function GalleryRow({ row, direction }) {
@@ -6,8 +6,56 @@ export default function GalleryRow({ row, direction }) {
   const trackRef = useRef(null);
   const wrapperRef = useRef(null);
 
-useEffect(() => {
-  const handleScroll = () => {
+  // untuk efek masuk/keluar judul & foto
+  const [active, setActive] = useState(false);
+  const [leaving, setLeaving] = useState(false);
+
+  // inertia scroll
+  const targetXRef = useRef(0);
+  const currentXRef = useRef(0);
+  const rafRef = useRef(null);
+
+  // split kata untuk animasi per kata
+  const titleWords = useMemo(() => row.title.split(" "), [row.title]);
+  const descWords = useMemo(() => row.description.split(" "), [row.description]);
+
+  const exitTimerRef = useRef(null);
+
+  useEffect(() => {
+    const rowEl = rowRef.current;
+    if (!rowEl) return;
+
+    // IntersectionObserver untuk masuk/keluar section judul
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          // jika sedang proses keluar, batalkan
+          if (exitTimerRef.current) clearTimeout(exitTimerRef.current);
+
+          setLeaving(false);
+          setActive(true);
+        } else {
+          setLeaving(true);
+
+          // delay sedikit supaya animasi keluar selesai,
+          // tapi bisa dibatalkan saat masuk lagi
+          exitTimerRef.current = setTimeout(() => {
+            setActive(false);
+          }, 450);
+        }
+      },
+      {
+        // mulai aktif ketika area judul mendekati tengah
+        root: null,
+        threshold: 0.25,
+      }
+    );
+
+    obs.observe(rowEl);
+    return () => obs.disconnect();
+  }, []);
+
+  useEffect(() => {
     const track = trackRef.current;
     const wrapper = wrapperRef.current;
     if (!track || !wrapper) return;
@@ -15,79 +63,119 @@ useEffect(() => {
     const NAVBAR_HEIGHT = 80;
     const vh = window.innerHeight;
 
-    const wrapperRect = wrapper.getBoundingClientRect();
+    const clamp = (v, min, max) => Math.min(Math.max(v, min), max);
 
-    // ✅ hitung visible width tanpa padding wrapper
-    const style = window.getComputedStyle(wrapper);
-    const padL = parseFloat(style.paddingLeft) || 0;
-    const padR = parseFloat(style.paddingRight) || 0;
-    const visibleWidth = wrapper.clientWidth - padL - padR;
+    const handleScroll = () => {
+      const wrapperRect = wrapper.getBoundingClientRect();
 
-    const rawMax = track.scrollWidth - visibleWidth;
+      // ✅ hitung visible width tanpa padding wrapper
+      const style = window.getComputedStyle(wrapper);
+      const padL = parseFloat(style.paddingLeft) || 0;
+      const padR = parseFloat(style.paddingRight) || 0;
+      const visibleWidth = wrapper.clientWidth - padL - padR;
 
-    if (rawMax <= 0) {
-      track.style.transform = "translateX(0px)";
-      return;
-    }
+      const rawMax = track.scrollWidth - visibleWidth;
 
-    const EXTRA_END_SPACE = 120; // baris 1 biar ujung tidak kepotong
-    const effectiveMax =
-      direction === "left" ? rawMax + EXTRA_END_SPACE : rawMax;
+      if (rawMax <= 0) {
+        targetXRef.current = 0;
+        return;
+      }
 
-    // kalau belum terlihat, kunci posisi awal
-    const out = wrapperRect.top > vh || wrapperRect.bottom < NAVBAR_HEIGHT;
-    if (out) {
-      const startX = direction === "left" ? 0 : -effectiveMax; // ✅ start kanan tidak “terlalu masuk”
-      track.style.transform = `translateX(${startX}px)`;
-      return;
-    }
+      const EXTRA_END_SPACE = 120;
+      const effectiveMax = direction === "left" ? rawMax + EXTRA_END_SPACE : rawMax;
 
-    // progress saat wrapper terlihat
-    const start = vh * 0.75;
-    const end = NAVBAR_HEIGHT - wrapperRect.height * 0.15;
+      // kalau belum terlihat, kunci posisi awal
+      const out = wrapperRect.top > vh || wrapperRect.bottom < NAVBAR_HEIGHT;
+      if (out) {
+        const startX = direction === "left" ? 0 : -effectiveMax;
+        targetXRef.current = startX;
+        return;
+      }
 
-    let progress = (start - wrapperRect.top) / (start - end);
-    progress = Math.min(Math.max(progress, 0), 1);
+      // progress saat wrapper terlihat
+      const start = vh * 0.75;
+      const end = NAVBAR_HEIGHT - wrapperRect.height * 0.15;
 
-    // pelankan awal
-    progress = progress ** 2.5;
+      let progress = (start - wrapperRect.top) / (start - end);
+      progress = clamp(progress, 0, 1);
 
-    const translateX =
-      direction === "left"
-        ? -effectiveMax * progress
-        : -effectiveMax * (1 - progress);
+      // pelankan awal
+      progress = progress ** 2.5;
 
-    track.style.transform = `translateX(${translateX}px)`;
-  };
+      const translateX =
+        direction === "left"
+          ? -effectiveMax * progress
+          : -effectiveMax * (1 - progress);
 
-  window.addEventListener("scroll", handleScroll, { passive: true });
-  handleScroll();
+      // set target (bukan langsung set transform)
+      targetXRef.current = translateX;
+    };
 
-  return () => window.removeEventListener("scroll", handleScroll);
-}, [direction]);
+    const animate = () => {
+      const SMOOTH = 0.08; // makin kecil makin lembut + ada inertia
+      currentXRef.current =
+        currentXRef.current + (targetXRef.current - currentXRef.current) * SMOOTH;
+
+      track.style.transform = `translateX(${currentXRef.current}px)`;
+      rafRef.current = requestAnimationFrame(animate);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll);
+
+    handleScroll();
+    rafRef.current = requestAnimationFrame(animate);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, [direction]);
 
   return (
     <section className="gallery-row" ref={rowRef}>
-      <h3 className="gallery-title">
-        {row.title.split(" ").map((w, i) => (
-          <span key={i} className="hover-word">{w}&nbsp;</span>
+      {/* JUDUL */}
+      <h3 className={`gallery-title ${active ? "is-in" : ""} ${leaving ? "is-out" : ""}`}>
+        {titleWords.map((w, i) => (
+          <span
+            key={i}
+            className="word"
+            style={{ transitionDelay: `${i * 55}ms` }}
+          >
+            {w}&nbsp;
+          </span>
         ))}
       </h3>
 
-      <p className="gallery-desc">
-        {row.description.split(" ").map((w, i) => (
-          <span key={i} className="hover-word">{w}&nbsp;</span>
+      {/* DESKRIPSI */}
+      <p className={`gallery-desc ${active ? "is-in" : ""} ${leaving ? "is-out" : ""}`}>
+        {descWords.map((w, i) => (
+          <span
+            key={i}
+            className="word"
+            style={{ transitionDelay: `${140 + i * 18}ms` }}
+          >
+            {w}&nbsp;
+          </span>
         ))}
       </p>
 
-      <div 
-        className={`gallery-track-wrapper ${direction}`}
-        ref={wrapperRef}
-    >
-        <div className="gallery-track" ref={trackRef}>
+      {/* TRACK */}
+      <div className={`gallery-track-wrapper ${direction}`} ref={wrapperRef}>
+        {/* vignette */}
+        <span className="gallery-vignette left" aria-hidden="true" />
+        <span className="gallery-vignette right" aria-hidden="true" />
+
+        <div className={`gallery-track ${active ? "track-in" : ""}`} ref={trackRef}>
           {row.images.map((img, i) => (
-            <div key={i} className="gallery-image">
+            <div
+              key={i}
+              className={`gallery-image ${active ? "img-in" : ""} ${leaving ? "img-out" : ""}`}
+              style={{ transitionDelay: `${120 + i * 60}ms` }}
+            >
               <img src={img} alt="" />
+              <span className="img-dim" aria-hidden="true" />
             </div>
           ))}
         </div>
