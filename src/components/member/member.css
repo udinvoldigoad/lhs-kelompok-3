@@ -448,3 +448,64 @@
   background: #38bdf8;
   box-shadow: 0 0 12px rgba(56,189,248,0.6);
 }
+
+/* =========================
+   MEMBER – MOBILE
+========================= */ 
+ @media (max-width: 768px) {
+  .member-section {
+    padding: 70px 6%;
+  }
+
+  .member-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .member-grid {
+    gap: 14px;
+    padding-bottom: 10px;
+  }
+
+  .member-card {
+    min-width: 200px;
+    border-radius: 14px;
+  }
+
+  .member-image {
+    aspect-ratio: 3 / 4;
+  }
+
+  .member-overlay {
+    padding: 14px;
+  }
+
+  .member-overlay h4 {
+    font-size: 1rem;
+  }
+
+  .member-overlay span {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .member-modal.poster {
+    width: 92vw;
+    height: 82vh;
+    border-radius: 18px;
+  }
+
+  .poster-content {
+    padding: 22px;
+  }
+
+  .poster-name {
+    font-size: 2rem;
+  }
+
+  .poster-quote {
+    font-size: 0.9rem;
+  }
+}
