@@ -3,7 +3,7 @@
 ===================== */
 
 .gallery-section {
-  padding: 120px 0;
+  padding: 140px 0 120px;
   background: #020617;
   color: white;
 }
@@ -107,11 +107,14 @@
   height: 100%;
   object-fit: cover;
   display: block;
+  transition: transform 0.35s ease, filter 0.35s ease;
 }
 
 /* HOVER FOTO */
 .gallery-image:hover {
   transform: translateY(-4px);
+  transform: scale(1.03);
+  filter: saturate(1.05);
   box-shadow: 0 18px 40px rgba(0,0,0,0.45);
 }
 

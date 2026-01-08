@@ -30,7 +30,7 @@ useEffect(() => {
       return;
     }
 
-    const EXTRA_END_SPACE = 200; // baris 1 biar ujung tidak kepotong
+    const EXTRA_END_SPACE = 120; // baris 1 biar ujung tidak kepotong
     const effectiveMax =
       direction === "left" ? rawMax + EXTRA_END_SPACE : rawMax;
 
