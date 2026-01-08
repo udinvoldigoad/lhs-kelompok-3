@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import "./gallery.css";
 
-export default function GalleryRow({ row, direction = "left" }) {
+export default function GalleryRow({ row, direction }) {
   const rowRef = useRef(null);
   const trackRef = useRef(null);
   const wrapperRef = useRef(null);
@@ -13,62 +13,54 @@ useEffect(() => {
     if (!track || !wrapper) return;
 
     const NAVBAR_HEIGHT = 80;
-    const viewportHeight = window.innerHeight;
+    const vh = window.innerHeight;
 
     const wrapperRect = wrapper.getBoundingClientRect();
 
-    /* =========================
-       FOTO BELUM MASUK LAYAR
-       → JANGAN GERAK
-    ========================= */
-    if (
-      wrapperRect.top > viewportHeight ||
-      wrapperRect.bottom < NAVBAR_HEIGHT
-    ) {
+    // ✅ hitung visible width tanpa padding wrapper
+    const style = window.getComputedStyle(wrapper);
+    const padL = parseFloat(style.paddingLeft) || 0;
+    const padR = parseFloat(style.paddingRight) || 0;
+    const visibleWidth = wrapper.clientWidth - padL - padR;
+
+    const rawMax = track.scrollWidth - visibleWidth;
+
+    if (rawMax <= 0) {
+      track.style.transform = "translateX(0px)";
       return;
     }
 
-    /* =========================
-       HITUNG PROGRESS SCROLL
-       BASED ON FOTO
-    ========================= */
-    const start = viewportHeight * 0.85;
-    const end = NAVBAR_HEIGHT + wrapperRect.height * 0.2;
+    const EXTRA_END_SPACE = 200; // baris 1 biar ujung tidak kepotong
+    const effectiveMax =
+      direction === "left" ? rawMax + EXTRA_END_SPACE : rawMax;
+
+    // kalau belum terlihat, kunci posisi awal
+    const out = wrapperRect.top > vh || wrapperRect.bottom < NAVBAR_HEIGHT;
+    if (out) {
+      const startX = direction === "left" ? 0 : -effectiveMax; // ✅ start kanan tidak “terlalu masuk”
+      track.style.transform = `translateX(${startX}px)`;
+      return;
+    }
+
+    // progress saat wrapper terlihat
+    const start = vh * 0.75;
+    const end = NAVBAR_HEIGHT - wrapperRect.height * 0.15;
 
     let progress = (start - wrapperRect.top) / (start - end);
     progress = Math.min(Math.max(progress, 0), 1);
 
-    /* 🔥 PERLAMBAT AWAL GERAK */
-    progress = progress ** 1.8;
+    // pelankan awal
+    progress = progress ** 2.5;
 
-    /* =========================
-       JARAK GESER REAL
-    ========================= */
-    const EXTRA_END_SPACE = 180; // kompensasi visual
-
-    const maxTranslate =
-      track.scrollWidth - wrapper.clientWidth + EXTRA_END_SPACE;
-
-
-    if (maxTranslate <= 0) return;
-
-    /* =========================
-       SELANG-SELING ARAH
-    ========================= */
-    let translateX;
-
-    if (direction === "left") {
-      // kiri: 0 → -max
-      translateX = -maxTranslate * progress;
-    } else {
-      // kanan: max → 0
-      translateX = maxTranslate * (1 - progress);
-    }
+    const translateX =
+      direction === "left"
+        ? -effectiveMax * progress
+        : -effectiveMax * (1 - progress);
 
     track.style.transform = `translateX(${translateX}px)`;
   };
 
-  window.addEventListener("scroll", handleScroll);
+  window.addEventListener("scroll", handleScroll, { passive: true });
   handleScroll();
 
   return () => window.removeEventListener("scroll", handleScroll);

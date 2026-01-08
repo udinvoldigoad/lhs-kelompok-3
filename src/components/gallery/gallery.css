@@ -87,6 +87,7 @@
   padding-inline: 10%; /* ⬅️ PINDAH KE SINI */
 }
 
+
 .gallery-track::-webkit-scrollbar {
   display: none;
 }
@@ -124,20 +125,4 @@
     width: 280px;
     height: 200px;
   }
-}
-
-/* =====================
-   ARAH SELANG-SELING ASLI
-===================== */
-
-/* baris kiri → normal */
-.gallery-track-wrapper.left {
-  display: flex;
-  justify-content: flex-start;
-}
-
-/* baris kanan → mulai dari kanan */
-.gallery-track-wrapper.right {
-  display: flex;
-  justify-content: flex-end;
 }
