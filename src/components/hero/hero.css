@@ -164,10 +164,9 @@
 .hero-content-netflix button {
   font-family: "Space Grotesk", sans-serif;
   font-weight: 600;
-  font-size: 0.95rem;
-  letter-spacing: 0.04em;
+  font-size: 0.85rem;
 
-  padding: 14px 32px;
+  padding: 14px 20px;
   border-radius: 999px;
   border: none;
 
