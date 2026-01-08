@@ -266,3 +266,17 @@
 .toast b {
   color: #38bdf8;
 }
+
+.char-counter {
+  margin-top: 6px;
+  font-size: 0.75rem;
+  text-align: right;
+  opacity: 0.7;
+  color: rgba(255,255,255,0.75);
+}
+
+.comment-text {
+  word-break: break-word;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}

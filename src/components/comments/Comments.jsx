@@ -32,8 +32,9 @@ export default function Comments() {
   const [toast, setToast] = useState("");
   const [loading, setLoading] = useState(true);
 
-  const listRef = useRef(null);
+  const MAX_CHAR = 300;
 
+  const listRef = useRef(null);
 
   const commentsRef = useMemo(() => collection(db, "comments"), []);
 
@@ -123,12 +124,14 @@ const submit = async (e) => {
             <label>
               Pesan
               <textarea
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
                 placeholder="Tulis komentar..."
-                rows={5}
-                required
+                value={message}
+                maxLength={MAX_CHAR}
+                onChange={(e) => setMessage(e.target.value)}
               />
+              <div className="char-counter">
+                {message.length}/{MAX_CHAR}
+              </div>
             </label>
 
             <button type="submit" disabled={submitting}>
