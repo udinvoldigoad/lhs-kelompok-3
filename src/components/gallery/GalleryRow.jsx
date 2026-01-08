@@ -21,7 +21,7 @@ export default function GalleryRow({ row, direction }) {
 
   const exitTimerRef = useRef(null);
 
-  useEffect(() => {
+  useEffect(() => { //useEffect untuk intersection observer
     const rowEl = rowRef.current;
     if (!rowEl) return;
 
@@ -55,7 +55,7 @@ export default function GalleryRow({ row, direction }) {
     return () => obs.disconnect();
   }, []);
 
-  useEffect(() => {
+  useEffect(() => { //useEffect untuk scroll inertia
     const track = trackRef.current;
     const wrapper = wrapperRef.current;
     if (!track || !wrapper) return;
