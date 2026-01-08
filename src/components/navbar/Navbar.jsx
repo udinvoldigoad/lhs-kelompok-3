@@ -22,7 +22,7 @@ export default function Navbar() {
           <li><a href="#hero">Beranda</a></li>
           <li><a href="#about">Tentang</a></li>
           <li><a href="#gallery">Galeri</a></li>
-          <li><a href="#comments">Pesan</a></li>
+          <li><a href="#comments">Komentar</a></li>
         </ul>
       </div>
     </nav>
