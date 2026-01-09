@@ -1,16 +1,27 @@
-# React + Vite
+# LHS Kelompok 3
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Repositori ini berisi website berbasis React + Vite yang dibangun untuk Menyimpan kenangan kelompok belajar. Aplikasi ini menampilkan antarmuka web modern dan dikembangkan menggunakan ekosistem Vite agar proses pengembangan lebih cepat dengan dukungan Hot Module Replacement (HMR)
 
-Currently, two official plugins are available:
+## Teknologi
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- React
+- Vite
+- Node.js & npm
+- Firebase (Firestore)
 
-## React Compiler
+## Cara Menjalankan
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+Pastikan Node.js dan npm sudah terpasang di perangkat Anda. Setelah itu jalankan perintah berikut di root repositori:
 
-## Expanding the ESLint configuration
+```bash
+npm install
+npm run dev
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Setelah server berjalan, akses aplikasi melalui alamat yang ditampilkan di terminal (biasanya `http://localhost:5173`).
+
+## Struktur Singkat
+
+- `src/` berisi source code utama aplikasi.
+- `public/` berisi aset statis.
+- `vite.config.js` konfigurasi Vite.
